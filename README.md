@@ -1,381 +1,136 @@
+# 🔐 JWT Authentication
 
-# 🔐 JWT Authentication System
+A secure authentication system built with **Node.js, Express.js, MongoDB, and JSON Web Tokens (JWT)**. This project demonstrates how users can authenticate themselves and access protected routes using token-based authentication.
 
-A secure **JWT (JSON Web Token) Authentication** project built using **Node.js, Express.js, MongoDB, Mongoose, bcrypt, and JWT**. This project demonstrates how to implement user authentication with password hashing, token generation, protected routes, and authorization.
+## ✨ Features
 
----
+- 🔑 **User Authentication** — Register and log in securely.
+- 🔒 **JWT Token Authentication** — Generate and verify JSON Web Tokens.
+- 🛡️ **Protected Routes** — Restrict access to authenticated users.
+- 🔐 **Password Security** — Secure password handling using appropriate hashing techniques.
+- ⚙️ **Environment Configuration** — Manage sensitive settings through environment variables.
+- 🚀 **REST API** — Build authentication functionality using Express.js routes.
 
-# 🚀 Features
+## 🛠️ Tech Stack
 
-- 👤 User Registration
-- 🔑 User Login
-- 🔒 Password Hashing using bcrypt
-- 🎫 JWT Token Generation
-- ✅ Protected Routes
-- 🛡️ Authentication Middleware
-- 🚪 Logout (Client Side)
-- ❌ Invalid Token Handling
-- ⚠️ Error Handling
-- 📦 MongoDB Database Integration
-- 🌐 REST API
+| Technology | Purpose |
+|---|---|
+| Node.js | JavaScript runtime |
+| Express.js | Backend framework |
+| MongoDB | Database |
+| Mongoose | MongoDB object modeling |
+| JSON Web Token (JWT) | Token-based authentication |
+| bcrypt / bcryptjs | Password hashing, if configured |
+| dotenv | Environment variable management |
 
----
+## 📂 Project Setup
 
-# 🛠️ Tech Stack
-
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JSON Web Token (JWT)
-- bcrypt
-- dotenv
-- CORS
-- Nodemon
-
----
-
-# 📁 Project Structure
-
-```
-jwt-authentication/
-│
-├── config/
-│   └── db.js
-│
-├── controllers/
-│   └── authController.js
-│
-├── middleware/
-│   └── authMiddleware.js
-│
-├── models/
-│   └── User.js
-│
-├── routes/
-│   └── authRoutes.js
-│
-├── .env
-├── .gitignore
-├── package.json
-├── server.js
-└── README.md
-```
-
----
-
-# 📦 Installation
-
-### Clone the repository
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/jwt-authentication.git
+git clone https://github.com/mohinkhan16/JWT_Authentication.git
 ```
 
-### Move into project folder
+### 2. Navigate to the Project
 
 ```bash
-cd jwt-authentication
+cd JWT_Authentication
 ```
 
-### Install dependencies
+### 3. Install Dependencies
 
 ```bash
 npm install
 ```
 
----
+### 4. Configure Environment Variables
 
-# ▶️ Run Project
+Create a `.env` file in the project root directory.
 
-Development mode
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_secret_key
+```
+
+Replace the placeholder values with your own configuration. Use a strong JWT secret and never commit your `.env` file to GitHub.
+
+### 5. Run the Application
+
+Use the command configured in your `package.json`.
+
+For a project configured with Nodemon:
 
 ```bash
 npm run dev
 ```
 
-Production mode
+For a project configured with a start script:
 
 ```bash
 npm start
 ```
 
----
+The server will run on the configured port, for example:
 
-# 🔑 Environment Variables
+`http://localhost:5000`
 
-Create a **.env** file in the project root.
+## 🔑 How JWT Authentication Works
 
-```env
-PORT=5000
+1. **User Registration:** A user submits their registration details.
+2. **Password Security:** The password is hashed before being stored, if password hashing is implemented.
+3. **User Login:** The server verifies the submitted credentials.
+4. **Token Generation:** The server generates a JWT after successful authentication.
+5. **Protected Routes:** The client sends the token with subsequent requests.
+6. **Token Verification:** Authentication middleware validates the token before allowing access to protected resources.
 
-MONGO_URI=your_mongodb_connection_string
+### Example Authorization Header
 
-JWT_SECRET=your_secret_key
+```http
+Authorization: Bearer <your_jwt_token>
 ```
 
-Example
+## 🧪 API Testing
 
-```env
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/jwtAuth
-JWT_SECRET=mySecretKey123
-```
+You can test the authentication endpoints using Postman or another API testing tool.
 
----
+Depending on your implementation, test the following operations:
 
-# 📌 API Endpoints
+- Register a new user.
+- Log in with valid credentials.
+- Verify that invalid credentials are rejected.
+- Access a protected route with a valid JWT.
+- Confirm that requests without a valid token are rejected.
 
-## Register User
+Refer to the routes defined in your source code for the exact endpoint URLs and request formats.
 
-**POST**
+## 🔐 Security Best Practices
 
-```
-/api/auth/register
-```
+- Never store passwords as plain text.
+- Keep JWT secrets and database credentials in environment variables.
+- Validate user input on the server.
+- Set appropriate token expiration times.
+- Protect sensitive routes with authentication middleware.
+- Never commit credentials or secret keys to version control.
 
-### Request Body
+## 📚 Learning Outcomes
 
-```json
-{
-  "name": "Mohin",
-  "email": "mohin@gmail.com",
-  "password": "123456"
-}
-```
+Through this project, I explored:
 
-### Response
+- Authentication and authorization concepts.
+- JWT generation and verification.
+- Express.js middleware.
+- REST API development.
+- MongoDB database integration.
+- Secure handling of user credentials.
 
-```json
-{
-  "message": "User registered successfully"
-}
-```
-
----
-
-## Login User
-
-**POST**
-
-```
-/api/auth/login
-```
-
-### Request Body
-
-```json
-{
-  "email": "mohin@gmail.com",
-  "password": "123456"
-}
-```
-
-### Response
-
-```json
-{
-  "token": "JWT_TOKEN"
-}
-```
-
----
-
-## Get Profile (Protected Route)
-
-**GET**
-
-```
-/api/auth/profile
-```
-
-### Headers
-
-```
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
-### Response
-
-```json
-{
-    "_id":"...",
-    "name":"Mohin",
-    "email":"mohin@gmail.com"
-}
-```
-
----
-
-# 🔒 Authentication Flow
-
-```
-User Registers
-        │
-        ▼
-Password is Hashed (bcrypt)
-        │
-        ▼
-Stored in MongoDB
-        │
-        ▼
-User Login
-        │
-        ▼
-Password Verification
-        │
-        ▼
-JWT Token Generated
-        │
-        ▼
-Client Stores Token
-        │
-        ▼
-Token Sent in Authorization Header
-        │
-        ▼
-Middleware Verifies Token
-        │
-        ▼
-Access Granted to Protected Routes
-```
-
----
-
-# 🔐 Security Features
-
-- Password Hashing using bcrypt
-- JWT Authentication
-- Protected Routes
-- Environment Variables
-- Invalid Token Detection
-- Unauthorized Access Prevention
-- Error Handling
-
----
-
-# 📚 Concepts Covered
-
-- REST API
-- MVC Architecture
-- Authentication
-- Authorization
-- JWT
-- bcrypt
-- Middleware
-- Express Router
-- MongoDB CRUD
-- Mongoose Schema
-- Environment Variables
-- HTTP Status Codes
-- Async/Await
-- Error Handling
-
----
-
-# 📷 API Testing
-
-You can test the APIs using:
-
-- Postman
-- Thunder Client (VS Code)
-- Insomnia
-
----
-
-# 📦 Dependencies
-
-```json
-{
-  "bcrypt": "^latest",
-  "cors": "^latest",
-  "dotenv": "^latest",
-  "express": "^latest",
-  "jsonwebtoken": "^latest",
-  "mongoose": "^latest",
-  "nodemon": "^latest"
-}
-```
-
-Install all dependencies
-
-```bash
-npm install express mongoose bcrypt jsonwebtoken dotenv cors
-npm install --save-dev nodemon
-```
-
----
-
-# 🚀 Future Improvements
-
-- Refresh Tokens
-- Email Verification
-- Forgot Password
-- Reset Password
-- OTP Authentication
-- Google OAuth
-- GitHub OAuth
-- Role-Based Authorization (Admin/User)
-- User Profile Update
-- Change Password
-- Account Verification
-- Rate Limiting
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome!
-
-1. Fork the repository
-
-2. Create a new branch
-
-```bash
-git checkout -b feature-name
-```
-
-3. Commit your changes
-
-```bash
-git commit -m "Added new feature"
-```
-
-4. Push the branch
-
-```bash
-git push origin feature-name
-```
-
-5. Open a Pull Request
-
----
-
-# 👨‍💻 Author
+## 👨‍💻 Author
 
 **Mohin Pathan**
 
-**Aspiring Full Stack Developer**
-
-### Technologies
-
-- HTML5
-- CSS3
-- Bootstrap
-- JavaScript
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
+- GitHub: [@mohinkhan16](https://github.com/mohinkhan16)
+- Project Repository: [JWT_Authentication](https://github.com/mohinkhan16/JWT_Authentication)
 
 ---
 
-# ⭐ Support
-
-If you found this project helpful, please consider giving it a ⭐ on GitHub.
-
----
-
-# 📄 License
-
-This project is licensed under the **MIT License**.
+⭐ If you find this project useful, consider giving the repository a star!
